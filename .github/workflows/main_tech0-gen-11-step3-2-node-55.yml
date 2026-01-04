@@ -27,16 +27,15 @@ jobs:
           # 1. 展開用のフォルダを作成
           mkdir -p ./deploy_package
           
-          # 2. 隠しファイル（.nextなど）もコピー対象に含める設定を有効化
-          shopt -s dotglob
+          # 2. standalone フォルダの中身を丸ごと deploy_package に移動
+          # これにより .next フォルダも確実に含まれます
+          mv .next/standalone/* ./deploy_package/ 2>/dev/null || true
+          mv .next/standalone/.next ./deploy_package/ 2>/dev/null || true
           
-          # 3. standaloneの中身をすべてコピー（これで.nextフォルダも入ります）
-          cp -r .next/standalone/* ./deploy_package/
-          
-          # 4. 静的ファイルとpublicをコピー
+          # 3. 静的ファイルなどをコピー
           mkdir -p ./deploy_package/.next/static
-          cp -r .next/static/* ./deploy_package/.next/static/
-          cp -r public ./deploy_package/
+          cp -r .next/static/. ./deploy_package/.next/static/
+          cp -r public ./deploy_package/public
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

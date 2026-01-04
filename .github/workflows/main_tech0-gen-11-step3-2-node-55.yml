@@ -22,27 +22,19 @@ jobs:
           npm install
           npm run build
 
-      # Standaloneモードで必要なファイルだけを抽出して転送準備をする
+# Standaloneモードで必要なファイルだけを抽出して転送準備をする
       - name: Prepare standalone artifact
         run: |
-          # 1. 展開用のフォルダを作成
           mkdir -p ./deploy_package
+          # 1. standaloneの中身（server.jsや.nextフォルダ）をコピー
+          cp -r .next/standalone/. ./deploy_package/
           
-          # 2. standaloneの中身をコピー（server.jsが含まれます）
-          cp -r .next/standalone/* ./deploy_package/
-          
-          # 3. 静的ファイル用のディレクトリを個別に作成してコピー
+          # 2. 静的ファイルをstandalone内の.nextへコピー
           mkdir -p ./deploy_package/.next/static
           cp -r .next/static/. ./deploy_package/.next/static/
           
-          # 4. publicフォルダをコピー
+          # 3. publicフォルダをコピー
           cp -r public ./deploy_package/public
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: ./deploy_package
 
   deploy:
     runs-on: ubuntu-latest

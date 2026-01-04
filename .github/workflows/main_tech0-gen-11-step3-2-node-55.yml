@@ -24,18 +24,15 @@ jobs:
 
       - name: Prepare standalone artifact
         run: |
-          # 1. 展開用のフォルダを作成
           mkdir -p ./deploy_package
           
-          # 2. standalone フォルダの中身を丸ごと deploy_package に移動
-          # これにより .next フォルダも確実に含まれます
-          mv .next/standalone/* ./deploy_package/ 2>/dev/null || true
-          mv .next/standalone/.next ./deploy_package/ 2>/dev/null || true
+          # フォルダの中身ではなく、フォルダ自体をターゲットにしてコピー
+          cp -r .next/standalone ./deploy_package/
           
-          # 3. 静的ファイルなどをコピー
-          mkdir -p ./deploy_package/.next/static
-          cp -r .next/static/. ./deploy_package/.next/static/
-          cp -r public ./deploy_package/public
+          # 静的ファイルとpublicをコピー（パスを調整）
+          mkdir -p ./deploy_package/standalone/.next/static
+          cp -r .next/static/. ./deploy_package/standalone/.next/static/
+          cp -r public ./deploy_package/standalone/public
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -54,11 +51,8 @@ jobs:
           path: ./release # 明示的な展開先を指定
 
       - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'tech0-gen-11-step3-2-node-55'
-          slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA2DC9F9F5AD4D79A7470E2982B67D92 }}
-          clean: true # これを追加：既存のソースコードを削除してからデプロイします
+          package: ./release/standalone # standaloneフォルダの中身をデプロイ
+          clean: true

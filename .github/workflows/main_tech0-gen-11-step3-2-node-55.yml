@@ -56,3 +56,4 @@ jobs:
           app-name: 'tech0-gen-11-step3-2-node-55'
           package: ./release/standalone # standaloneフォルダの中身をデプロイ
           clean: true
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA2DC9F9F5AD4D79A7470E2982B67D92 }}

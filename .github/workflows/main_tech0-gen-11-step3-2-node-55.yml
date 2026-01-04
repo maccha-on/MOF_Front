@@ -24,18 +24,19 @@ jobs:
 
       - name: Prepare standalone artifact
         run: |
+          # 1. 展開用のフォルダを作成
           mkdir -p ./deploy_package
           
-          # 1. standaloneの中身（server.jsなど）をコピー
+          # 2. 隠しファイル（.nextなど）もコピー対象に含める設定を有効化
+          shopt -s dotglob
+          
+          # 3. standaloneの中身をすべてコピー（これで.nextフォルダも入ります）
           cp -r .next/standalone/* ./deploy_package/
           
-          # 2. 【重要】隠しフォルダ .next を明示的にコピー
-          cp -r .next/standalone/.next ./deploy_package/
-          
-          # 3. 静的ファイルとpublicをコピー
+          # 4. 静的ファイルとpublicをコピー
           mkdir -p ./deploy_package/.next/static
-          cp -r .next/static/. ./deploy_package/.next/static/
-          cp -r public ./deploy_package/public
+          cp -r .next/static/* ./deploy_package/.next/static/
+          cp -r public ./deploy_package/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

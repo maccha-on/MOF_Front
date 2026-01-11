@@ -37,7 +37,7 @@ const url = `${API_BASE_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
         summary: ctx.text,
         tags: [ctx.metadata?.category || "AI分析"],
         author: SYSTEM_AUTHOR_NAME,   // ★定数を使用
-        lastUpdated: LAST_UPDATED_PLACEHOLDER, // 適宜更新日時を設定
+        lastUpdated: LAST_UPDATED_PLACEHOLDER, // ★定数を使用
         format: DEFAULT_FILE_FORMAT   // ★定数を使用
       }));
 

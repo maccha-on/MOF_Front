@@ -1,6 +1,6 @@
 
 
-
+```
 src/
 ├── app/
 │   ├── layout.tsx          # 共通レイアウト（現状のまま）
@@ -21,3 +21,5 @@ src/
 │   └── file.ts             # SearchResult 型を定義
 └── constants/              # 定数
     └── config.ts           # API_BASE_URL などの設定値
+
+```

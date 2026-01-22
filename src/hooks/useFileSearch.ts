@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { SearchResult } from '../types/file';
 import { API_BASE_URL, SYSTEM_AUTHOR_NAME, DEFAULT_FILE_FORMAT, LAST_UPDATED_PLACEHOLDER } from '../constants/config';
 
+const TIMEOUT_MS = 10_000; // タイムアウト 10秒（好みで調整）
+
 export const useFileSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearched, setIsSearched] = useState(false);
@@ -23,16 +25,30 @@ export const useFileSearch = () => {
     setSelectedFile(null);
     setAiAnswer(null);
 
-    try {
-const url = `${API_BASE_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
+    // タイムアウト用の AbortController を作成
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      TIMEOUT_MS
+    );
 
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`エラー: ${res.status}`);
+    try {
+      const url = `${API_BASE_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
+
+      const res = await fetch(url, { signal: controller.signal });
+      if (!res.ok) throw new Error(`Fetch エラー: ${res.status}`);
 
       const data = await res.json();
+
+      setAiAnswer(data.answer ?? null); // 26.1.21追加 AIの回答をセット
       
+      /**
+       * ★2026.1.21 修正
+       * - id に index を使わない
+       * - backend が返す documentName を安定IDとして使用
+       */
       const formattedResults = data.contexts.map((ctx: any, index: number) => ({
-        id: index,
+        id: String(ctx.documentName),
         name: ctx.file_name || "関連資料",
         summary: ctx.text,
         tags: [ctx.metadata?.category || "AI分析"],

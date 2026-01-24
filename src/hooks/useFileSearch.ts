@@ -1,9 +1,11 @@
+// src.hooks.useFileSearch.ts
+
 'use client';
 
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { SearchResult } from '../types/file';
-import { API_BASE_URL, SYSTEM_AUTHOR_NAME, DEFAULT_FILE_FORMAT, LAST_UPDATED_PLACEHOLDER } from '../constants/config';
+import { BACKEND_API_URL, SYSTEM_AUTHOR_NAME, DEFAULT_FILE_FORMAT, LAST_UPDATED_PLACEHOLDER } from '../constants/config';
 
 const TIMEOUT_MS = 10_000;
 
@@ -30,7 +32,7 @@ export const useFileSearch = () => {
     const timeoutId = window.setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     try {
-      const url = `${API_BASE_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
+      const url = `${BACKEND_API_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
       const res = await fetch(url, { signal: controller.signal });
       if (!res.ok) throw new Error(`Fetch エラー: ${res.status}`);
 

@@ -1,15 +1,17 @@
+// src.constants.config.ts
+
 /**
  * アプリケーション全体で使用する定数
  */
 
 // APIのベースURL
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-// 注) ビルド時に定数が固定されてしまうため注意。
-
-// 以下コメントは無視して。
+// export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+//
 // ★26.01.24 修正 maccha
-// 元の渡し方だとビルドで固定されてしまうため、
-// export const BACKEND_API_URL = process.env.NEXT_PUBLIC_API_URL;
+// 上記の渡し方だとビルドで固定されてしまうため、localhostの記載を削除します。
+// ローカル対応したい場合は、次のように修正してください。
+// (A) Next.js 側に /api/config を作って、サーバ側で env を読んで返す（クライアントはそれを fetch）
+export const BACKEND_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // アプリケーション名
 export const APP_NAME = "司書AIアプリ MOF";

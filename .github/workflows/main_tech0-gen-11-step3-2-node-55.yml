@@ -31,15 +31,15 @@ jobs:
           mkdir -p ./deploy_package
           
           # 2. standalone フォルダの中身（server.js等）をコピー
-          cp -r .next/standalone/. ./deploy_package/
+          cp -a .next/standalone/. ./deploy_package/
           
           # 3. 【重要】隠しフォルダ .next を、名前を指定して直接コピー
-          cp -r .next/standalone/.next ./deploy_package/
+          cp -a .next/standalone/.next ./deploy_package/
           
           # 4. 静的ファイルとpublicをコピー
           mkdir -p ./deploy_package/.next/static
-          cp -r .next/static/. ./deploy_package/.next/static/
-          cp -r public ./deploy_package/public
+          cp -a .next/static/. ./deploy_package/.next/static/
+          cp -a public ./deploy_package/public
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

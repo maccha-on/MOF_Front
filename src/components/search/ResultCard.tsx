@@ -66,7 +66,7 @@ export const ResultCard = ({ file, isSelected, onClick, onOpen }: ResultCardProp
 
           <div className="grid grid-cols-3 gap-2 bg-gray-200 p-2 rounded text-xs text-slate-600 mt-2">
             <div className="border-r border-gray-300 px-2 text-center">カテゴリ: {file.documentCategory}</div>
-            <div className="border-r border-gray-300 px-2 text-center">最終更新: {file. documentDate}</div>
+            <div className="border-r border-gray-300 px-2 text-center">文書日付: {file. documentDate}</div>
             <div className="px-2 text-center">形式: {file.format}</div>
           </div>
         </div>

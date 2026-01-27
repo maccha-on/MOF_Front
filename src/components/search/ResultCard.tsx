@@ -1,3 +1,5 @@
+// components/search/ResultCard.tsx
+
 'use client';
 
 import React from 'react';
@@ -8,9 +10,11 @@ interface ResultCardProps {
   isSelected: boolean;
   onClick: () => void;
   onOpen?: () => void;
+  // ★追加：表示用の要約（あればこっちを優先）
+  summaryText?: string;
 }
 
-export const ResultCard = ({ file, isSelected, onClick, onOpen }: ResultCardProps) => {
+export const ResultCard = ({ file, isSelected, onClick, onOpen, summaryText }: ResultCardProps) => {
   return (
     <div 
       onClick={onClick}
@@ -52,9 +56,16 @@ export const ResultCard = ({ file, isSelected, onClick, onOpen }: ResultCardProp
           >
             {'file_name' in file ? (file as any).file_name : (file as any).name}
           </h3>
+
+          {/* summaryTextがあれば優先 */}
+          <div className="bg-white/50 p-3 rounded text-sm text-slate-600 border border-gray-200">
+            {summaryText ?? file.summary}
+          </div>
+          {/* 旧コード
           <div className="bg-white/50 p-3 rounded text-sm text-slate-600 border border-gray-200">
             {file.summary}
           </div>
+          旧コードここまで */}
           
           <div className="flex gap-2 flex-wrap">
             {file.tags && file.tags.map((tag) => (

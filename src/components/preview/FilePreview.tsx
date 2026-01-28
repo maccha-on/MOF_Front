@@ -3,14 +3,16 @@
 'use client';
 
 import React from 'react';
-import { File, FileText, Image as ImageIcon } from 'lucide-react';
+import { File, FileText } from 'lucide-react';
 import { SearchResult } from '../../types/file';
 
 interface FilePreviewProps {
   selectedFile: SearchResult | null;
+  width: number; // ★追加: 外から幅を受け取る
 }
 
-export const FilePreview = ({ selectedFile }: FilePreviewProps) => {
+// ★修正: width プロップを受け取るように変更
+export const FilePreview = ({ selectedFile, width }: FilePreviewProps) => {
 
   const handleOpenFile = () => {
     if (selectedFile?.uri) {
@@ -29,8 +31,15 @@ export const FilePreview = ({ selectedFile }: FilePreviewProps) => {
   };
 
   return (
-    <aside className="hidden lg:block w-72 bg-white p-6 border-l border-gray-200 h-screen sticky top-0 overflow-y-auto">
-      <h2 className="font-bold text-lg mb-6">プレビュー</h2>
+   // ★修正:
+    // 1. "w-72" を削除 (固定幅をやめる)
+    // 2. style={{ width }} を追加 (動的な幅を適用)
+    // 3. "shrink-0" を追加 (縮まないようにする)
+    <aside 
+      className="hidden lg:block bg-white p-6 border-l border-gray-200 h-full overflow-y-auto shrink-0"
+      style={{ width: `${width}px` }}
+    >
+   <h2 className="font-bold text-lg mb-6">プレビュー</h2>
       
       {selectedFile ? (
         <div className="space-y-6 animate-in fade-in duration-300">
@@ -50,7 +59,7 @@ export const FilePreview = ({ selectedFile }: FilePreviewProps) => {
           </div>
 
           <div className="space-y-1">
-            <p className="text-xs text-slate-500 font-bold">文書日付</p>
+            <p className="text-xs text-slate-500 font-bold">文書日付：</p>
             <p className="text-sm">{selectedFile.documentDate}</p>
           </div>
 
@@ -59,15 +68,19 @@ export const FilePreview = ({ selectedFile }: FilePreviewProps) => {
             <p className="text-sm uppercase">{selectedFile.format}</p>
           </div>
 
-          {/* ▼▼▼ プレビュー表示エリア（クリックイベント削除版） ▼▼▼ */}
-          <div className="w-full aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden border border-gray-300 relative">
+          {/* プレビュー表示エリア */}
+         {/* ▼▼▼ 修正箇所：styleでアスペクト比を指定し、PDF設定を追加 ▼▼▼ */}
+          <div 
+            className="w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-300 relative"
+            style={{ aspectRatio: '3/4' }} // ★重要: これで幅に合わせて高さも変わります
+          >
             {getFileType(selectedFile) === 'pdf' ? (
               <iframe 
-                src={`${selectedFile.uri}#toolbar=0&navpanes=0&scrollbar=0`}
+                // ★重要: view=FitH を追加して「幅に合わせてズーム」するように設定
+                src={`${selectedFile.uri}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                 className="w-full h-full object-cover"
                 title="PDF Preview"
               />
-              
             ) : getFileType(selectedFile) === 'image' ? (
               <img 
                 src={selectedFile.uri} 
@@ -80,7 +93,6 @@ export const FilePreview = ({ selectedFile }: FilePreviewProps) => {
                 <span className="text-xs">プレビュー不可</span>
               </div>
             )}
-
           </div>
           {/* ▲▲▲ 修正ここまで ▲▲▲ */}
 

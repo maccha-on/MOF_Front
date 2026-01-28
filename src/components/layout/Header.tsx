@@ -19,7 +19,10 @@ export const Header = ({ onLogoClick }: HeaderProps) => {
           <Sparkles className="w-5 h-5 text-white" />
         </div>
         <span className="text-xl font-bold tracking-tight text-slate-800">
-          司書AIアプリ MOF
+          リブたす
+        </span>
+        <span className="text-x3 tracking-tight text-slate-800">
+        司書(Librarian)が忙しいあなたを助けます
         </span>
       </div>
 

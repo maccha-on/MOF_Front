@@ -56,13 +56,14 @@ export const ResultCard = ({ file, isSelected, onClick, onOpen }: ResultCardProp
             {file.summary}
           </div>
           
+          {/* ★タグは非表示
           <div className="flex gap-2 flex-wrap">
             {file.tags && file.tags.map((tag) => (
               <span key={tag} className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
                 タグ（{tag}）
               </span>
             ))}
-          </div>
+          </div>　*/}
 
         {/* ▼▼▼ ここを修正しました（3列→4列に変更し、件名を追加） ▼▼▼ */}
           <div className="grid grid-cols-4 gap-2 bg-gray-200 p-2 rounded text-xs text-slate-600 mt-2">

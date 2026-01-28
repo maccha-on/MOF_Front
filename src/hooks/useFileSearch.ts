@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { SearchResult } from '../types/file';
-import { BACKEND_API_URL, DEFAULT_FILE_FORMAT, DEFAULT_DOCUMENT_CATEGORY, DEFAULT_DOCUMENT_DATE } from '../constants/config';
+import { BACKEND_API_URL, DEFAULT_FILE_FORMAT, DEFAULT_DOCUMENT_CATEGORY, DEFAULT_DOCUMENT_DATE, DEFAULT_DOCUMENT_TITLE } from '../constants/config';
 
 const TIMEOUT_MS = 30_000;
 
@@ -42,13 +42,18 @@ export const useFileSearch = () => {
       const data = await res.json();
       const sources = Array.isArray(data.sources) ? data.sources : [];
 
-      const formattedResults: SearchResult[] = sources.map((s: any, index: number) => {//index: numberを追加
+      const formattedResults: SearchResult[] = sources.map((s: any, index: number) => {
         const fileName = s.file_name ?? "資料名";
         const chunkId = Number.isFinite(s.chunk_id) ? s.chunk_id : 0;
         const category = s.category ?? "unknown";
+        // ★追加：ファイル名のお尻（拡張子）を見て、自動で形式を決めるロジック
+        // 例: "report.pdf" -> "pdf" -> "PDF"
+        const extension = fileName.includes('.') 
+          ? fileName.split('.').pop()?.toUpperCase() 
+          : DEFAULT_FILE_FORMAT;
 
         return {
-          id: `${fileName}#${chunkId}_${index}`,//_${index}を追加
+          id: `${fileName}#${chunkId}_${index}`,
           name: fileName,
           summary: s.text ?? "",
           category,
@@ -58,6 +63,7 @@ export const useFileSearch = () => {
           tags: [category],
           documentCategory: DEFAULT_DOCUMENT_CATEGORY, 
           documentDate: DEFAULT_DOCUMENT_DATE,
+          documentTitle: DEFAULT_DOCUMENT_TITLE,//文書タイトルを追加
           format: DEFAULT_FILE_FORMAT,
         };
       });
@@ -125,7 +131,9 @@ export const useFileSearch = () => {
                 return {
                   ...item,
                   documentCategory: info.category,
-                  documentDate: info.date
+                  documentDate: info.date,
+                  // ★追加: 取得したタイトルを反映
+                  documentTitle: info.title
                 };
               }
               return item;
@@ -161,7 +169,9 @@ export const useFileSearch = () => {
               return {
                 ...prevSelected,
                 documentCategory: info.category,
-                documentDate: info.date
+                documentDate: info.date,
+                // ★追加: 取得したタイトルを反映
+                documentTitle: info.title
               };
             }
             return prevSelected;

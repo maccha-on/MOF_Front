@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const tableName = "LatestDocumentDB";
     const tableClient = TableClient.fromConnectionString(connectionString, tableName);
 
-    const metadataMap: Record<string, { category: string, date: string }> = {};
+    const metadataMap: Record<string, { category: string, date: string, title: string }> = {};//titleを追加
 
     for (const fileName of fileNames) {
       console.log(`2. Searching for: [${fileName}]`);
@@ -41,6 +41,8 @@ export async function POST(request: Request) {
           metadataMap[fileName] = {
             category: (entity.partitionKey as string) || "未分類",
             date: String(entity.LatestDate || "-"),
+            // ★追加: RowKey を title として取得
+            title: (entity.rowKey as string) || "-",
           };
           found = true;
           break; 

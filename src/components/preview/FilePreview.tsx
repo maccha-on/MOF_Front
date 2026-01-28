@@ -21,12 +21,17 @@ export const FilePreview = ({ selectedFile }: FilePreviewProps) => {
           </div>
 
           <div className="space-y-1">
-            <p className="text-xs text-slate-500 font-bold">文書カテゴリ</p>
+            <p className="text-xs text-slate-500 font-bold">カテゴリ：</p>
             <p className="text-sm">{selectedFile.documentCategory}</p>
           </div>
 
           <div className="space-y-1">
-            <p className="text-xs text-slate-500 font-bold">文書日付</p>
+            <p className="text-xs text-slate-500 font-bold">件名：</p>
+            <p className="text-sm">{selectedFile.documentTitle}</p>
+          </div>
+
+          <div className="space-y-1">
+            <p className="text-xs text-slate-500 font-bold">日付：</p>
             <p className="text-sm">{selectedFile.documentDate}</p>
           </div>
 

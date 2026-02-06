@@ -9,6 +9,7 @@ import { FilePreview } from '../components/preview/FilePreview';
 import { useFileSearch } from '../hooks/useFileSearch';
 import { SearchForm } from '../components/search/SearchForm';
 
+import { useSession, signIn } from "next-auth/react";
 
 export default function Home() {
   // ロジックをフックから呼び出し
@@ -91,6 +92,7 @@ export default function Home() {
                 <p className="font-bold text-slate-700">
                   {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
                 </p>
+                <p className="text-slate-500">（※保存したファイルは、管理者がindex化するまで反映されません。）</p>
 
                 <button className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none">ファイルを保存する</button>
             </div>
@@ -98,8 +100,8 @@ export default function Home() {
 
 
           <section className="w-full max-w-4xl flex flex-col items-center gap-3">
-            <p className="text-slate-500 text-sm">ファイルを探す（検索ボックスに質問を入力してください）</p>
-            
+            <p className="text-slate-500 text-base font-medium">ファイルを探す</p>
+            <p className="text-slate-500">（※数字のつくGoogleアカウントの人のみアクセスできます。）</p>
             <SearchForm 
             value={searchQuery} 
             onChange={setSearchQuery} 

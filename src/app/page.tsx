@@ -130,34 +130,51 @@ export default function Home() {
             
             {/* 上部：保存と検索 */}
             <div className="space-y-6">
-              <div>
+
+              {/* ファイル保存 */}
               <section className="w-full max-w-3xl">
-                <div onClick={handleSaveClick} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className={`cursor-pointer border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-6 text-center h-56 transition-all ${isDragging 
-              ? "border-blue-700 bg-blue-100" // ドラッグ中の強調スタイル
-              : "border-blue-500 bg-blue-50/20 hover:bg-blue-50/40" // 通常時のスタイル
-              }`}>
-                
-              {/* ここが重要：画面には見えないが、ファイル選択ダイアログを開くためのinput */}
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                <p className="font-bold text-slate-700">
-                  {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
-                </p>
+                <div
+                  onClick={handleSaveClick}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  className={`cursor-pointer border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-6 text-center h-56 transition-all ${
+                    isDragging
+                      ? "border-blue-700 bg-blue-100"
+                      : "border-blue-500 bg-blue-50/20 hover:bg-blue-50/40"
+                  }`}
+                >
+                  {/* 画面には見えないが、ファイル選択ダイアログを開くための input */}
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
 
-                <button className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none">ファイルを保存する</button>
-            </div>
+                  <p className="font-bold text-slate-700">
+                    {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
+                  </p>
+
+                  <button
+                    className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none"
+                    type="button"
+                  >
+                    ファイルを保存する
+                  </button>
+                </div>
               </section>
-              </div>
 
+              {/* ファイル検索 */}
               <div>
                 <h3 className="font-medium text-slate-800 mb-2">ファイルを探す</h3>
-                
-                <SearchForm 
-                value={searchQuery} 
-                onChange={setSearchQuery} 
-                onSubmit={handleSearch} 
-                variant="small" 
-                />
 
+                <SearchForm
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  onSubmit={handleSearch}
+                  variant="small"
+                />
               </div>
             </div>
 

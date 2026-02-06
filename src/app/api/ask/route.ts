@@ -3,6 +3,9 @@ import { auth } from "@/src/auth";
 
 export async function GET(req: Request) {
   const session = await auth();
+  console.log("BACKEND_API_URL:", process.env.BACKEND_API_URL ? "set" : "MISSING");
+  console.log("BFF_BACKEND_SHARED_SECRET:", process.env.BFF_BACKEND_SHARED_SECRET ? "set" : "MISSING");
+
 
   // ログイン必須
   if (!session?.user?.email) {

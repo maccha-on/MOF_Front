@@ -32,12 +32,17 @@ export const useFileSearch = () => {
     const timeoutId = window.setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     try {
-      const url = `${BACKEND_API_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
+      //const url = `${BACKEND_API_URL}/ask?q=${encodeURIComponent(searchQuery)}`;
+      const url = `/api/ask?q=${encodeURIComponent(searchQuery)}`;
+
       console.log("BACKEND_API_URL =", BACKEND_API_URL);
       console.log("NEXT_PUBLIC_API_URL =", process.env.NEXT_PUBLIC_API_URL);
       console.log("fetch url =", url);
       const res = await fetch(url, { signal: controller.signal });
-      if (!res.ok) throw new Error(`Fetch エラー: ${res.status}`);
+      if (!res.ok)
+        if (res.status === 401) setError("401 Error: 検索するにはログインしてください。");
+          else if (res.status === 403) setError("403 Error: 認められたアカウントでログインしてください。");
+          else setError(`データ取得エラー: ${res.status}`);
 
       const data = await res.json();
       const sources = Array.isArray(data.sources) ? data.sources : [];

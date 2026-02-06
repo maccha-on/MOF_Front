@@ -11,8 +11,6 @@ import { FilePreview } from '../components/preview/FilePreview';
 import { useFileSearch } from '../hooks/useFileSearch';
 import { SearchForm } from '../components/search/SearchForm';
 
-import { useSession, signIn } from "next-auth/react";
-
 export default function Home() {
   const {
     searchQuery,
@@ -111,32 +109,38 @@ export default function Home() {
         <Header onLogoClick={() => setIsSearched(false)} />
         <main className="max-w-5xl mx-auto px-6 py-10 flex flex-col items-center gap-16">
           <section className="w-full max-w-3xl">
-            <div onClick={handleSaveClick}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            className={`cursor-pointer border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-6 text-center h-56 transition-all ${isDragging 
-              ? "border-blue-700 bg-blue-100" // ドラッグ中の強調スタイル
-              : "border-blue-500 bg-blue-50/20 hover:bg-blue-50/40" // 通常時のスタイル
-              }`}>
-                
-              {/* ここが重要：画面には見えないが、ファイル選択ダイアログを開くためのinput */}
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                <p className="font-bold text-slate-700">
-                  {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
-                </p>
-                <p className="text-slate-500">（※保存したファイルは、管理者がindex化するまで反映されません。）</p>
-
-            <div 
+            <div
               onClick={handleSaveClick}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`cursor-pointer border-2 border-dashed rounded-xl p-20 flex flex-col items-center justify-center gap-6 text-center h-56 transition-all ${isDragging ? "border-blue-700 bg-blue-100" : "border-blue-500 bg-blue-50/20 hover:bg-blue-50/40"}`}
+              className={`cursor-pointer border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-6 text-center h-56 transition-all ${
+                isDragging
+                  ? "border-blue-700 bg-blue-100"
+                  : "border-blue-500 bg-blue-50/20 hover:bg-blue-50/40"
+              }`}
             >
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-              <p className="font-bold text-slate-700">{isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}</p>
-              <button className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none">ファイルを保存する</button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              <p className="font-bold text-slate-700">
+                {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
+              </p>
+
+              <p className="text-slate-500">
+                （※保存したファイルは、管理者がindex化するまで反映されません。）
+              </p>
+
+              <button
+                type="button"
+                className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none"
+              >
+                ファイルを保存する
+              </button>
             </div>
           </section>
 
@@ -184,6 +188,7 @@ export default function Home() {
                 </section>
               </div>
 
+              {/* ファイル検索 */}
               <div>
                 <section className="w-full max-w-4xl flex flex-col items-center gap-3">
                   <p className="text-slate-500 text-sm">ファイルを探す（検索ボックスに質問を入力してください）</p>

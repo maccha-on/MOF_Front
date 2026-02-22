@@ -120,25 +120,24 @@ export default function Home() {
                 
               {/* ここが重要：画面には見えないが、ファイル選択ダイアログを開くためのinput */}
               <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                <p className="font-bold text-slate-700">
+                <p className="font-bold text-slate-700 text-[18px]">
                   {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
                 </p>
+                <button className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none">アップロード</button>
                 <p className="text-slate-500">※保存したファイルは、管理者がindex化するまで反映されません。</p>
-
-                <button className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-md shadow-md font-medium transition-colors w-64 pointer-events-none">ファイルを保存する</button>
             </div>
           </section>
 
           <section className="w-full max-w-4xl flex flex-col items-center gap-3">
-            <p className="text-slate-500 text-base font-medium">ファイルを探す</p>
-            <p className="text-slate-500">※'mo','fu', 数字 いずれかの入ったGoogleアカウントの人のみアクセスできます。</p>
+            <h1 className="text-slate-700 text-base font-bold text-[18px]">ファイルを探す</h1>
             <SearchForm 
             value={searchQuery} 
             onChange={setSearchQuery} 
             onSubmit={handleSearch} 
             variant="large" 
             />
-
+            <p className="text-slate-500">※現在、アカウント制限は解除しています。</p> 
+            {/* <p className="text-slate-500">※'mo','fu', 数字 いずれかの入ったGoogleアカウントの人のみアクセスできます。</p> */}
           </section>
         </main>
       </div>
@@ -180,9 +179,9 @@ export default function Home() {
                     className="hidden"
                   />
 
-                  <p className="font-bold text-slate-700">
-                    {isDragging ? "ここにドロップしてアップロード" : "ファイル保存"}
-                  </p>
+                  <h1 className="font-bold text-slate-700">
+                    {isDragging ? "ここにドロップしてアップロード" : "ファイルを保存する"}
+                  </h1>
                   <p className="text-slate-500">※保存したファイルは、管理者がindex化するまで反映されません。</p>
                   
 
